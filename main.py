@@ -1,6 +1,5 @@
 import random
 import datetime
-import collections
 
 def gerar_dados(n):
     insumos = []
@@ -16,6 +15,7 @@ def gerar_dados(n):
         insumos.append(insumo)
     return sorted(insumos, key=lambda x: x["timestamp_consumo"])
 
+# Complexidade: O(n)
 def busca_sequencial(lista, id_insumo):
     encontrados = []
     for insumo in lista:
@@ -23,6 +23,7 @@ def busca_sequencial(lista, id_insumo):
             encontrados.append(insumo)
     return encontrados
 
+# Complexidade: O(log n)
 def busca_binaria(lista_ordenada, valor, chave="id_insumo"):
     inicio, fim = 0, len(lista_ordenada) - 1
     while inicio <= fim:
@@ -35,6 +36,7 @@ def busca_binaria(lista_ordenada, valor, chave="id_insumo"):
             fim = meio - 1
     return None
 
+# Complexidade: O(n log n)
 def merge_sort(lista, criterio):
     if len(lista) > 1:
         meio = len(lista) // 2
@@ -65,6 +67,7 @@ def merge_sort(lista, criterio):
             k += 1
     return lista
 
+# Complexidade: Pior Caso O(n^2), Caso Médio O(n log n)
 def quick_sort(lista, criterio):
     if len(lista) <= 1:
         return lista
@@ -78,18 +81,20 @@ def quick_sort(lista, criterio):
 def demonstrar_fila():
     print("\n--- Demonstração de Fila (FIFO) ---")
     dados = gerar_dados(5)
-    fila = collections.deque(dados)
+    fila = list(dados) # Usando lista como fila
     print("Fila inicial (5 insumos):")
     for item in fila:
         print(f"  - {item['nome_insumo']} (Consumido em: {item['timestamp_consumo']})")
 
     print("\nProcessando 2 insumos (os mais antigos)...")
-    primeiro = fila.popleft()
-    segundo = fila.popleft()
+    # A operação pop(0) em uma lista tem complexidade O(n)
+    primeiro = fila.pop(0)
+    segundo = fila.pop(0)
     print(f"Processado: {primeiro['nome_insumo']}")
     print(f"Processado: {segundo['nome_insumo']}")
 
     print("\nAdicionando 1 novo insumo...")
+    # A operação append em uma lista tem complexidade O(1)
     novo_insumo = gerar_dados(1)[0]
     fila.append(novo_insumo)
     print(f"Adicionado: {novo_insumo['nome_insumo']}")
@@ -107,6 +112,7 @@ def demonstrar_pilha():
         print(f"  - {item['nome_insumo']} (Consumido em: {item['timestamp_consumo']})")
 
     print("\nConsultando os 2 últimos insumos registrados...")
+    # A operação pop() em uma lista tem complexidade O(1)
     ultimo = pilha.pop()
     penultimo = pilha.pop()
     print(f"Consultado: {ultimo['nome_insumo']} (o mais recente)")
